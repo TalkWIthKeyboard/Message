@@ -15,7 +15,7 @@ router.post('/user', (req, res, next) => {
   api.create(req, res, model['user'], null, 'username', null, (body) => {
     // 对账号和密码的长度进行检查
     let lengthCheck = (str) => {
-      return !(str.length > 12 || str.length < 6);
+      return ! (str.length > 12 || str.length < 6);
     };
     return lengthCheck(body['username']) && lengthCheck(body['password']);
   }, 'The length of username or password error!', next);
@@ -41,8 +41,23 @@ router.get('/friend/:username', (req, res, next) => {
 /**
  * 添加朋友
  */
-router.get('/friend/user/:_id', (req, res, next) => {
+router.post('/friend', (req, res, next) => {
+  req.body.adder = req.session.user._id;
+  api.create(req, res, model['friend'], ['adder', 'friend'], null, null, (body) => {
+    return true;
+  }, null, next);
+});
 
+
+/**
+ * 删除朋友
+ */
+router.delete('/friend/:friend', (req, res, next) => {
+  api.delete(
+    req, res, model['friend'], ['friend'], null,
+    ['adder', 'friend'], [req.session.user._id, req.params['friend']],
+    next
+  );
 });
 
 module.exports = router;

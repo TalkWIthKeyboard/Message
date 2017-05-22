@@ -8,14 +8,14 @@ let pub = {};
 pub.objMaker = (key, value) => {
   let obj = {};
 
-  if (typeof key !== Array) {
+  if (typeof key !== 'object') {
     obj[key] = value;
     return obj;
   }
 
-  for (let i = 0; i < key.length; i++) {
+  for (let i = 0; i < key.length; i ++)
     obj[key[i]] = value[i];
-  }
+
   return obj;
 };
 

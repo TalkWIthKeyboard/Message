@@ -25,7 +25,7 @@ conf.addFn(MessageSchema, [
   'findAllCount',
   'checkIsExist',
   'findByCondition',
-  'deleteById'
+  'deleteByCondition'
 ]);
 
 module.exports = MessageSchema;

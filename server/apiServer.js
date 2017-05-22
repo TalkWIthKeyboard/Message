@@ -35,7 +35,7 @@ let saveObj = (res, body, model, cb, next) => {
       next(err);
       return;
     }
-    !cb ? response.resSuccessBuilder(res, _model) : cb(_model);
+    ! cb ? response.resSuccessBuilder(res, _model) : cb(_model);
   });
 };
 
@@ -56,7 +56,7 @@ pub.create = (req, res, model, keyList, key, cb, selfCheck, errorInfo, next) => 
     .then((body) => {
       if (key && body[key]) {
         // 自定义的检查规则不满足
-        if (!selfCheck(body)) {
+        if (! selfCheck(body)) {
           next({status: 400, msg: errorInfo});
           return;
         }
@@ -68,9 +68,7 @@ pub.create = (req, res, model, keyList, key, cb, selfCheck, errorInfo, next) => 
         }, (err) => {
           next({status: 400, msg: err});
         });
-      }
-      else
-        saveObj(res, body, model, cb, next);
+      } else saveObj(res, body, model, cb, next);
     })
     .catch((err) => {
       next({status: 400, msg: err});
@@ -85,13 +83,15 @@ pub.create = (req, res, model, keyList, key, cb, selfCheck, errorInfo, next) => 
  * @param model
  * @param paramsList
  * @param queryList
+ * @param key
+ * @param value
  * @param next
  */
-pub.delete = (req, res, model, paramsList = ['id'], queryList = null, next) => {
+pub.delete = (req, res, model, paramsList = ['_id'], queryList = null, key, value, next) => {
   check.checkParams(req.params, req.query, paramsList, queryList, ([params,]) => {
-    promise.deleteByIdPromise(model, params.id)
+    promise.deleteByConditionPromise(model, util.objMaker(key, value))
       .then(() => {
-        response.resSuccessBuilder(res, {id: params.id});
+        response.resSuccessBuilder(res, 'success');
       })
       .catch((err) => {
         next({status: 400, msg: err});
@@ -113,7 +113,7 @@ pub.delete = (req, res, model, paramsList = ['id'], queryList = null, next) => {
  * @param key 查找的key
  * @param next
  */
-pub.get = (req, res, model, paramsList = ['id'], queryList = null, key, populateKey = null, next) => {
+pub.get = (req, res, model, paramsList = ['_id'], queryList = null, key, populateKey = null, next) => {
   check.checkParams(req.params, req.query, paramsList, queryList, ([params,]) => {
     promise.findByConditionPromise(model, util.objMaker(key, params[key]), populateKey)
       .then((data) => {
@@ -139,7 +139,7 @@ pub.get = (req, res, model, paramsList = ['id'], queryList = null, key, populate
  * @param populateKey
  * @param next
  */
-pub.update = (req, res, model, paramsList = ['id'], queryList = null, bodyList, populateKey = null, next) => {
+pub.update = (req, res, model, paramsList = ['_id'], queryList = null, bodyList, populateKey = null, next) => {
   let promiseList = [
     check.checkParamsPromise(req.params, req.query, paramsList, queryList),
     check.checkBodyPromise(req.body, model, bodyList)

@@ -40,7 +40,7 @@ pub.checkHandler = () => {
       flag = (each.url === req.originalUrl && each.type === req.method) ? true : flag;
     });
 
-    if (!flag)
+    if (! flag)
       // 进行登录页面的重定向
       req.session.user ? next() : next({status: 400, msg: 'error'});
     else next();

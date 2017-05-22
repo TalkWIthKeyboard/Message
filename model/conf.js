@@ -75,9 +75,9 @@ let staticsOp = {
         .exec(cb);
   },
 
-  deleteById: function (id, cb) {
+  deleteByCondition: function (obj, cb) {
     return this
-      .remove({_id: id})
+      .remove(obj)
       .exec(cb);
   },
 };

@@ -17,7 +17,10 @@ let FriendSchema = new mongoose.Schema({
     ref : 'user'
   },
   // 未读信息条数
-  notRead: Number
+  notRead: {
+    type: Number,
+    default: 0
+  }
 });
 
 conf.addFn(FriendSchema, [
@@ -25,7 +28,7 @@ conf.addFn(FriendSchema, [
   'findAllCount',
   'checkIsExist',
   'findByCondition',
-  'deleteById'
+  'deleteByCondition'
 ]);
 
 module.exports = FriendSchema;

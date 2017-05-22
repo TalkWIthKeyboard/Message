@@ -36,9 +36,9 @@ pub.findByConditionPromise = (model, obj, populateKey) => {
   });
 };
 
-pub.deleteByIdPromise = (model, id) => {
+pub.deleteByConditionPromise = (model, obj) => {
   return new Promise((resolve, reject) => {
-    model.deleteById(id, (err, res) => {
+    model.deleteByCondition(obj, (err, res) => {
       err ? reject(err) : resolve(res);
     });
   });

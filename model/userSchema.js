@@ -17,7 +17,7 @@ conf.addFn(UserSchema, [
   'findAllCount',
   'checkIsExist',
   'findByCondition',
-  'deleteById'
+  'deleteByCondition'
 ]);
 
 module.exports = UserSchema;

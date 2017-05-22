@@ -2,7 +2,6 @@
  * Created by CoderSong on 17/5/22.
  */
 
-
 let pub = {};
 let response = require('./../builder/responseBuilder');
 let promise = require('./../model/promise');
@@ -45,7 +44,6 @@ pub.login = (req, res, populateKey, next) => {
  */
 pub.findFriend = (req, res, next) => {
   check.checkParams(req.params, null, ['username'], null, ([params,]) => {
-
     promise.findByConditionPromise(model['user'], util.objMaker('username', params['username']), null)
       .then((data) => {
         promise.findByConditionPromise(
@@ -55,9 +53,9 @@ pub.findFriend = (req, res, next) => {
         )
           .then((_data) => {
             // 关系值 0 不是朋友，1 是朋友，2 是自己
-            let friend = req.session.user._id == data.id ? 2 : !_data ? 0 : 1;
-            response.resSuccessBuilder(res, {user: data, friend: friend})
-          })
+            let friend = req.session.user._id === data.id ? 2 : ! _data ? 0 : 1;
+            response.resSuccessBuilder(res, {user: data, friend: friend});
+          });
       })
       .catch((err) => {
         next({status: 400, msg: err});
@@ -66,7 +64,6 @@ pub.findFriend = (req, res, next) => {
     next({status: 400, msg: err});
   });
 };
-
 
 
 module.exports = pub;

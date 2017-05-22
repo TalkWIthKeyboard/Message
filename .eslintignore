@@ -1,2 +1,5 @@
 node_modules/*
 class/*
+public/bower
+public/images
+public/stylesheets
