@@ -54,14 +54,22 @@ pub.checkParams = (params, query, keyList, queryList, scb, fcb) => {
   let attr = {};
   if ((! params || ! keyList) && (! queryList || ! query)) return fcb();
   let flag = true;
-  params.push(query);
-  keyList.push(queryList);
+  let _params = {};
+  let _keyList = [];
+  if (params && keyList) {
+    _params = _.extend(params, _params);
+    _keyList = _.union(keyList, _keyList);
+  }
+  if (query && queryList) {
+    _params = _.extend(params, _params);
+    _keyList = _.union(keyList, _keyList);
+  }
 
-  _.each(keyList, (value) => {
+  _.each(_keyList, (value) => {
     attr[value] = false;
   });
-  if (params)
-    _.mapObject(params, (value, key) => {
+  if (_params)
+    _.mapObject(_params, (value, key) => {
       attr[key] = true;
     });
 

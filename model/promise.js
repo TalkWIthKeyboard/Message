@@ -20,17 +20,17 @@ pub.findAllCountPromise = (model) => {
   });
 };
 
-pub.checkIsExistPromise = (model, key, value) => {
+pub.checkIsExistPromise = (model, obj) => {
   return new Promise((resolve, reject) => {
-    model.checkIsExist(key, value, (err, res) => {
+    model.checkIsExist(obj, (err, res) => {
       err ? reject(err) : resolve(res);
     });
   });
 };
 
-pub.findByConditionPromise = (model, key, value, populateKey) => {
+pub.findByConditionPromise = (model, obj, populateKey) => {
   return new Promise((resolve, reject) => {
-    model.findByCondition(key, value, populateKey, (err, res) => {
+    model.findByCondition(obj, populateKey, (err, res) => {
       err ? reject(err) : resolve(res);
     });
   });

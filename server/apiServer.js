@@ -5,9 +5,9 @@
 let pub = {};
 let promise = require('./../model/promise');
 let response = require('./../builder/responseBuilder');
-let conf = require('./../model/conf');
 let check = require('./../server/requestServer');
 let _ = require('underscore');
+let util = require('./../builder/utilBuilder');
 
 /**
  * 保存对象
@@ -48,19 +48,20 @@ let saveObj = (res, body, model, cb, next) => {
  * @param key 检查冲突的key
  * @param cb 保存成功以后的回调
  * @param selfCheck 自定义检查规则
+ * @param errorInfo selfCheck对应的错误信息
  * @param next
  */
-pub.create = (req, res, model, keyList, key, cb, selfCheck, next) => {
+pub.create = (req, res, model, keyList, key, cb, selfCheck, errorInfo, next) => {
   check.checkBodyPromise(req.body, model, keyList)
     .then((body) => {
       if (key && body[key]) {
         // 自定义的检查规则不满足
         if (!selfCheck(body)) {
-          next({status: 400, msg: ''});
+          next({status: 400, msg: errorInfo});
           return;
         }
 
-        promise.checkIsExistPromise(model, key, body[key]).then((obj) => {
+        promise.checkIsExistPromise(model, util.objMaker(key, body[key])).then((obj) => {
           obj
             ? next({status: 400, msg: 'The value of key is exist!'})
             : saveObj(res, body, model, cb, next);
@@ -102,18 +103,19 @@ pub.delete = (req, res, model, paramsList = ['id'], queryList = null, next) => {
 
 
 /**
- * 通用的获取API
+ * 通用的获取API（暂时只支持单键值对查询）
  * @param req
  * @param res
  * @param model
  * @param paramsList
  * @param queryList
  * @param populateKey
+ * @param key 查找的key
  * @param next
  */
-pub.get = (req, res, model, paramsList = ['id'], queryList = null, populateKey = null, next) => {
+pub.get = (req, res, model, paramsList = ['id'], queryList = null, key, populateKey = null, next) => {
   check.checkParams(req.params, req.query, paramsList, queryList, ([params,]) => {
-    promise.findByConditionPromise(model, '_id', params.id, populateKey)
+    promise.findByConditionPromise(model, util.objMaker(key, params[key]), populateKey)
       .then((data) => {
         response.resSuccessBuilder(res, data);
       })
@@ -146,7 +148,7 @@ pub.update = (req, res, model, paramsList = ['id'], queryList = null, bodyList, 
   Promise.all(promiseList).then((results) => {
     let [params,] = results[0];
     let body = results[1];
-    promise.findByConditionPromise(model, '_id', params.id, populateKey).then((data) => {
+    promise.findByConditionPromise(model, util.objMaker('_id', params.id), populateKey).then((data) => {
       _.mapObject(body, (value, key) => {
         data[key] = value;
       });

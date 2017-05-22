@@ -54,22 +54,17 @@ let staticsOp = {
 
   /**
    * 重复检查
-   * @param key 键名
-   * @param value 值
+   * @param obj {key, value}
    * @param cb
    * @returns {Promise}
    */
-  checkIsExist: function (key, value, cb) {
-    let obj = {};
-    obj[key] = value;
+  checkIsExist: function (obj, cb) {
     return this
       .findOne(obj)
       .exec(cb);
   },
 
-  findByCondition: function (key, value, populateKey, cb) {
-    let obj = {};
-    obj[key] = value;
+  findByCondition: function (obj, populateKey, cb) {
     return ! populateKey
       ? this
         .findOne(obj)
