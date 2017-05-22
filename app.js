@@ -23,8 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use(middle.tokenHandler());
 app.use('/api', apiRouter);
-app.use('/h5', h5Router);
-app.use(middle.errorHandler());
-
+// app.use('/h5', h5Router);
+// app.use(middle.errorHandler());
 
 module.exports = app;

@@ -20,7 +20,6 @@ pub.findAllCountPromise = (model) => {
   });
 };
 
-
 pub.checkIsExistPromise = (model, key, value) => {
   return new Promise((resolve, reject) => {
     model.checkIsExist(key, value, (err, res) => {
@@ -28,7 +27,6 @@ pub.checkIsExistPromise = (model, key, value) => {
     });
   });
 };
-
 
 pub.findByConditionPromise = (model, key, value, populateKey) => {
   return new Promise((resolve, reject) => {

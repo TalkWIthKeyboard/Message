@@ -89,11 +89,11 @@ let staticsOp = {
 
 /**
  * 通用钩子方法（分pre与post）
- * @type {{pre: {updateDate: ((p1:*))}, post: {}}}
+ * @type {{pre: {updateDate: pub.hooksOp.pre.updateDate}, post: {}}}
  */
 pub.hooksOp = {
   pre: {
-    updateDate: (next) => {
+    updateDate: function (next) {
       this.isNew
         ? this.meta.createAt = this.meta.updateAt = Date.now()
         : this.meta.updateAt = Date.now();
@@ -105,10 +105,11 @@ pub.hooksOp = {
 
 /**
  * 表的populate对象对应
- * @type {{Event: string, Home: string, Token: string, User: string}}
+ * @type {{Friend: string, Message: string}}
  */
 pub.populateObj = {
-
+  Friend: 'adder friend',
+  Message: 'sender receiver'
 };
 
 // 自动添加方法
