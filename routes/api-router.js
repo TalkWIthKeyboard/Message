@@ -43,9 +43,7 @@ router.get('/friend/:username', (req, res, next) => {
  */
 router.post('/friend', (req, res, next) => {
   req.body.adder = req.session.user._id;
-  api.create(req, res, model['friend'], ['adder', 'friend'], null, null, (body) => {
-    return true;
-  }, null, next);
+  api.makeFriend(req, res, model['friend'], next);
 });
 
 
@@ -53,11 +51,10 @@ router.post('/friend', (req, res, next) => {
  * 删除朋友
  */
 router.delete('/friend/:friend', (req, res, next) => {
-  api.delete(
-    req, res, model['friend'], ['friend'], null,
-    ['adder', 'friend'], [req.session.user._id, req.params['friend']],
-    next
-  );
+  req.params.adder = req.session.user._id;
+  api.deleteFriend(req, res, model['friend'], next);
 });
+
+
 
 module.exports = router;

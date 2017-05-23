@@ -46,14 +46,23 @@ pub.findFriend = (req, res, next) => {
   check.checkParams(req.params, null, ['username'], null, ([params,]) => {
     promise.findByConditionPromise(model['user'], util.objMaker('username', params['username']), null)
       .then((data) => {
-        promise.findByConditionPromise(
-          model['friend'],
-          util.objMaker(['adder', 'friend'], [req.session.user._id, data._id]),
-          null
-        )
-          .then((_data) => {
+        let promiseList = [
+          promise.findByConditionPromise(
+            model['friend'],
+            util.objMaker(['adder', 'friend'], [req.session.user._id, data._id]),
+            null
+          ),
+          promise.findByConditionPromise(
+            model['friend'],
+            util.objMaker(['adder', 'friend'], [data._id, req.session.user._id]),
+            null
+          )
+        ];
+
+        Promise.all(promiseList)
+          .then(([data1, data2]) => {
             // 关系值 0 不是朋友，1 是朋友，2 是自己
-            let friend = req.session.user._id === data.id ? 2 : ! _data ? 0 : 1;
+            let friend = req.session.user._id === data.id ? 2 : ! data1 && ! data2 ? 0 : 1;
             response.resSuccessBuilder(res, {user: data, friend: friend});
           });
       })
