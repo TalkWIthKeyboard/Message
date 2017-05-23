@@ -1,0 +1,41 @@
+//
+   Created by CoderSong on 17/5/23.
+
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible', content='IE=edge')
+  meta(name='viewport', content='width=device-width, initial-scale=1, user-scalable=no')
+
+  // css
+  link(rel='stylesheet', href='//cdn.bootcss.com/jquery-weui/0.8.3/css/jquery-weui.min.css')
+  link(rel='stylesheet', href='//cdn.bootcss.com/weui/0.4.3/style/weui.min.css')
+  link(rel='stylesheet', href='/stylesheets/basic.css')
+  script(src="/bower/jquery/dist/jquery.js")
+
+  body(style="height:100%")
+    .weui_tab
+      .weui_tab_bd
+        block content
+      .weui_tabbar
+        - if (title === '好友')
+          a.weui_tabbar_item.weui_bar_item_on(href='/h5/friend')
+            .weui_tabbar_icon
+              img(src='/images/friend.png', alt='')
+            p.weui_tabbar_label 我的好友
+          a.weui_tabbar_item(href='/h5/search')
+            .weui_tabbar_icon
+              img(src='/images/find.png', alt='')
+            p.weui_tabbar_label 查找好友
+        - else
+          a.weui_tabbar_item(href='/h5/friend')
+            .weui_tabbar_icon
+              img(src='/images/friend.png', alt='')
+            p.weui_tabbar_label 我的好友
+          a.weui_tabbar_item.weui_bar_item_on(href='/h5/search')
+            .weui_tabbar_icon
+              img(src='/images/find.png', alt='')
+            p.weui_tabbar_label 查找好友
+  // js
+  script(src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js")
+  script(src="//cdn.bootcss.com/jquery-weui/0.8.3/js/jquery-weui.min.js")

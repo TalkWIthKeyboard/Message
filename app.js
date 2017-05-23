@@ -36,7 +36,7 @@ app.use(session({
 // 4. 添加中间件和路由
 app.use(middle.checkHandler());
 app.use('/api', apiRouter);
-// app.use('/h5', h5Router);
+app.use('/h5', h5Router);
 app.use(middle.errorHandler());
 
 module.exports = app;

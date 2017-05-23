@@ -1,0 +1,34 @@
+.weui_cell_ft .friends-add-btn {
+    height: 30px;
+}
+
+.weui_cell_ft .friends-delete-btn {
+    height: 30px;
+}
+
+.weui_media_hd .head-image {
+    height: 60px;
+    border-radius: 30px;
+}
+
+.weui_media_title img {
+    height: 15px;
+    margin-right: 5px;
+}
+
+.weui_media_title {
+    vertical-align: middle;
+}
+
+.weui_media_title img {
+    float: left;
+    margin-top: 6px;
+}
+
+.me {
+    margin-right: 8px;
+}
+
+.weui_media_box:before {
+    width: 92%;
+}

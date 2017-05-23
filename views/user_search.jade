@@ -1,0 +1,25 @@
+//
+   Created by CoderSong on 17/5/23.
+
+extends layout_inner
+
+block content
+  link(rel='stylesheet', href='/stylesheets/user_search.css')
+
+  #search_bar
+    .weui_search_bar
+      .weui_search_outer
+        .weui_search_inner
+          i.weui_icon_search
+          input#mov_input.weui_search_input(type='search', placeholder='搜索', required='')
+          a#search_clear.weui_icon_clear(href='javascript:')
+
+  #select
+    #search_title.weui_cell
+      .weui_cell_hd
+        img(src='/images/search_icon.png', alt='icon', style='width:20px;margin-right:5px;display:block')
+      .weui_cell_bd.weui_cell_primary
+        p(style='font-size:18px;') 搜索结果
+    .search-out.weui-panel-bd
+
+  script(src='/javascripts/user_search.js')

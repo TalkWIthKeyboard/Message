@@ -148,17 +148,19 @@ pub.update = (req, res, model, paramsList = ['_id'], queryList = null, bodyList,
   Promise.all(promiseList).then((results) => {
     let [params,] = results[0];
     let body = results[1];
-    promise.findByConditionPromise(model, util.objMaker('_id', params.id), populateKey).then((data) => {
-      _.mapObject(body, (value, key) => {
-        data[key] = value;
-      });
-      data.save((err) => {
-        if (err) {
-          next(err);
-          return;
-        }
-        response.resSuccessBuilder(res, data);
-      });
+    promise.findByConditionPromise(model, util.objMaker('_id', params.id), populateKey)
+      .then((list) => {
+        let data = list[0];
+        _.mapObject(body, (value, key) => {
+          data[key] = value;
+        });
+        data.save((err) => {
+          if (err) {
+            next(err);
+            return;
+          }
+          response.resSuccessBuilder(res, data);
+        });
     });
   }).catch((err) => {
     next({status: 400, msg: err});
@@ -199,99 +201,6 @@ pub.pagination = (req, res, model, paramsList = null, queryList = ['page', 'page
     .catch((err) => {
       next({status: 400, msg: err});
     });
-};
-
-/**
- * 交朋友（添加两条记录）
- * @param req
- * @param res
- * @param model
- * @param next
- */
-pub.makeFriend = (req, res, model, next) => {
-
-  let saveFriend = (body, scb, fcb) => {
-    let _model = new model(body);
-    _model.save((err) => {
-      err ? fcb(err) : scb(_model);
-    });
-  };
-
-  let saveFriendPromise = (body) => {
-    return new Promise((resolve, reject) => {
-      saveFriend(body, (res) => {
-        resolve(res);
-      }, (err) => {
-        reject(err);
-      })
-    })
-  };
-
-  let workBody = (body) => {
-    let promiseList = [
-      promise.checkIsExistPromise(model, util.objMaker(['adder', 'friend'], [body.adder, body.friend])),
-      promise.checkIsExistPromise(model, util.objMaker(['adder', 'friend'], [body.friend, body.adder]))
-    ];
-    let _body = {'adder': body.friend, 'friend': body.adder};
-
-    let saveWork = ([data1, data2]) => {
-      if (!data1 && !data2) {
-        Promise.all([
-          saveFriendPromise(body),
-          saveFriendPromise(_body)
-        ]).then(([_data1, _data2]) => {
-          response.resSuccessBuilder(res, 'success!');
-        }).catch((err) => {
-          next({status: 400, msg: err})
-        })
-      } else {
-        throw new Error('The friendship is exited!');
-      }
-    };
-
-    Promise.all(promiseList)
-      .then(saveWork)
-      .catch((err) => {
-        next({status: 400, msg: err})
-      })
-  };
-
-  check.checkBodyPromise(req.body, null, ['adder', 'friend'])
-    .then(workBody)
-    .catch((err) => {
-      next({status: 400, msg: err});
-    })
-};
-
-/**
- * 删除朋友关系（双向删除）
- * @param req
- * @param res
- * @param model
- * @param next
- */
-pub.deleteFriend = (req, res, model, next) => {
-  let workBody = ([body,]) => {
-      console.log(body);
-      let promiseList = [
-        promise.deleteByConditionPromise(model, util.objMaker(['adder', 'friend'], [body.adder, body.friend])),
-        promise.deleteByConditionPromise(model, util.objMaker(['adder', 'friend'], [body.friend, body.adder]))
-      ];
-
-      Promise.all(promiseList)
-        .then(() => {
-          response.resSuccessBuilder(res, 'success');
-        })
-        .catch((err) => {
-          next({status: 400, msg: err})
-        })
-  };
-
-  check.checkParamsPromise(req.params, null, ['adder', 'friend'], null)
-    .then(workBody)
-    .catch((err) => {
-      next({status: 400, msg: err});
-    })
 };
 
 module.exports = pub;

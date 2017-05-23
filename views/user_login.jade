@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  link(rel='stylesheet', href='/stylesheets/user_login.css')
+
+  .weui-row
+    img.head-image(src='/images/basic_photo.jpg')
+
+  .weui_cells.weui_cells_form
+    .weui_cell
+      .weui_cell_hd
+        img(src='/images/user_icon.png', alt='icon', style='width:26px;display:block')
+      .weui_cell_bd.weui_cell_primary
+        input#account.weui_input(placeholder='请输入您的账号')
+    .weui_cell
+      .weui_cell_hd
+        img(src='/images/password_icon.png', alt='icon', style='width:26px;display:block')
+      .weui_cell_bd.weui_cell_primary
+        input#password.weui_input(type='password', placeholder='请输入登录密码')
+
+  .tj-padded.tj-margin-top
+    button#login.weui_btn.weui_btn_primary 登录
+    button#register.weui_btn.weui_btn_primary 现在注册
+
+  script(src='/javascripts/user_login.js')

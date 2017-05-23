@@ -67,10 +67,10 @@ let staticsOp = {
   findByCondition: function (obj, populateKey, cb) {
     return ! populateKey
       ? this
-        .findOne(obj)
+        .find(obj)
         .exec(cb)
       : this
-        .findOne(obj)
+        .find(obj)
         .populate(populateKey)
         .exec(cb);
   },

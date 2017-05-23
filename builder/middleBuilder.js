@@ -31,6 +31,12 @@ pub.checkHandler = () => {
   }, {
     url: '/api/user',
     type: 'POST'
+  }, {
+    url: '/h5/login',
+    type: 'GET'
+  }, {
+    url: '/h5/user',
+    type: 'GET'
   }];
 
   // 2. 拦截方法
@@ -42,7 +48,7 @@ pub.checkHandler = () => {
 
     if (! flag)
       // 进行登录页面的重定向
-      req.session.user ? next() : next({status: 400, msg: 'error'});
+      req.session.user ? next() : res.redirect('/h5/login');
     else next();
   };
 };

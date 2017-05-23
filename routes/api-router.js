@@ -43,7 +43,7 @@ router.get('/friend/:username', (req, res, next) => {
  */
 router.post('/friend', (req, res, next) => {
   req.body.adder = req.session.user._id;
-  api.makeFriend(req, res, model['friend'], next);
+  user.makeFriend(req, res, model['friend'], next);
 });
 
 
@@ -52,9 +52,7 @@ router.post('/friend', (req, res, next) => {
  */
 router.delete('/friend/:friend', (req, res, next) => {
   req.params.adder = req.session.user._id;
-  api.deleteFriend(req, res, model['friend'], next);
+  user.deleteFriend(req, res, model['friend'], next);
 });
-
-
 
 module.exports = router;

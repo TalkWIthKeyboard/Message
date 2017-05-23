@@ -23,7 +23,7 @@ pub.resSuccessBuilder = (res, data) => {
  */
 pub.resErrorBuilder = (res, err) => {
   res.status(err.status || 500);
-  return res.json({'err': err.message});
+  return res.json({err: err.message});
 };
 
 module.exports = pub;

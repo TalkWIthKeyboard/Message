@@ -1,0 +1,25 @@
+//
+   Created by CoderSong on 17/5/23.
+
+extends layout_inner
+
+block content
+  link(rel='stylesheet', href='/stylesheets/user_friend.css')
+
+  .weui_panel.weui_panel_access
+    - if (friends.length > 0)
+      each friend in friends
+        a.weui_media_box.weui_media_appmsg(href='javascript:void(0);')
+          .weui_media_hd
+            img.weui_media_appmsg_thumb(src='/images/basic_photo.jpg', alt='icon')
+          .weui_media_bd
+            span.weui_media_title #{friend.username}
+            - if (friend.notRead !== 0)
+              span.weui_not_read #{friend.notRead}
+            p.weui_media_desc 由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。
+    - else
+      .empty-list
+        img(style='margin-top: 20px', src='/images/popcorn.png')
+
+
+  script(src='/javascripts/user_friend.js')
