@@ -8,12 +8,12 @@ $(document).ready(function () {
   $('#register').click(function () {
     window.location.href = '/h5/register';
   });
-  
+
   // 登录按钮
   $('#login').click(function () {
     var username = $('#account').val() || false;
     var password = $('#password').val() || false;
-    if (account && password) {
+    if (account && password)
       $.ajax({
         url: '/api/login',
         type: 'POST',
@@ -30,9 +30,9 @@ $(document).ready(function () {
           else
             $.toast('未知错误！', 'forbidden');
         }
-      })
-    } else {
+      });
+    else
       $.toast('账号/密码未输入！', 'forbidden');
-    }
+
   });
 });

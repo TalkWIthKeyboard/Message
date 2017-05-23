@@ -4,8 +4,8 @@
 
 let router = require('express').Router();
 let user = require('./../server/userServer');
+let message = require('./../server/messageServer');
 let populate = require('./../model/conf').populateObj;
-let response = require('./../builder/responseBuilder');
 
 /**
  * 登录页面
@@ -14,7 +14,7 @@ router.get('/login', (req, res, next) => {
   res.render('user_login', {
     layout: false,
     title: '登录'
-  })
+  });
 });
 
 /**
@@ -24,7 +24,7 @@ router.get('/register', (req, res, next) => {
   res.render('user_register', {
     layout: false,
     title: '注册'
-  })
+  });
 });
 
 /**
@@ -36,7 +36,7 @@ router.get('/friend', (req, res, next) => {
       layout: false,
       title: '好友',
       friends: data
-    })
+    });
   }, next);
 });
 
@@ -47,7 +47,21 @@ router.get('/search', (req, res, next) => {
   res.render('user_search', {
     layout: false,
     title: '搜索'
-  })
+  });
+});
+
+/**
+ * 消息页面
+ */
+router.get('/message/:receiver', (req, res, next) => {
+  if (req.params.receiver) {
+    req.params.sender = req.session.user._id;
+    // message.removeMessageReaderPromise(req.params)
+    //   .then()
+    message.findAllMessage(req.params, (data) => {
+      console.log(data);
+    });
+  }
 });
 
 module.exports = router;

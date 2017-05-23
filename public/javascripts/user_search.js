@@ -5,16 +5,16 @@
 $(document).ready(function () {
 
   // 1. 输入框回车事件
-  $("#mov_input").keydown(function (e) {
+  $('#mov_input').keydown(function (e) {
     if (e.which === 13) {
       var value = $(this).val() || false;
       if (value) {
         $('.search-out').empty();
-        $("#select").slideDown();
+        $('#select').slideDown();
         searchEvent(value);
       } else {
         $('.search-out').empty();
-        $("#select").slideUp();
+        $('#select').slideUp();
       }
     }
   });
@@ -43,27 +43,27 @@ $(document).ready(function () {
                                 </div> \
                             </div>';
 
-          if (friend.friend == 2) {
+          if (friend.friend == 2)
             appendString +=
               '   <div class="weui_cell_ft"> \
                       <h4 class="me">我</h4>\
                   </div>\
-              </div>'
-          } else {
-            if (friend.friend == 0) {
+              </div>';
+          else
+            if (friend.friend == 0)
               appendString +=
                 '   <div class="weui_cell_ft">\
                         <img data-id="' + friend.user.id + '" class="friends-add-btn" src="/images/friends_add.png"/> \
                     </div>\
-                  </div>'
-            } else {
+                  </div>';
+             else
               appendString +=
                 '   <div class="weui_cell_ft">\
                         <img data-id="' + friend.user.id + '" class="friends-delete-btn" src="/images/friends_delete.png"/> \
                     </div>\
-                </div>'
-            }
-          }
+                </div>';
+
+
 
           $('.search-out').append(
             appendString
@@ -79,14 +79,13 @@ $(document).ready(function () {
                 friend: id
               },
               success: function (data) {
-                console.log(data);
-                if (data.data == 'success!') {
+                if (data.data == 'success!')
                   window.location.href = '/h5/friend';
-                } else {
+                else
                   $.toast('添加好友失败！', 'forbidden');
-                }
+
               }
-            })
+            });
           });
 
           // 删除朋友
@@ -97,17 +96,17 @@ $(document).ready(function () {
               url: url,
               type: 'DELETE',
               success: function (data) {
-                if (data.data == 'success!') {
+                if (data.data == 'success!')
                   window.location.href = '/h5/friend';
-                } else {
+                else
                   $.toast('删除好友失败！', 'forbidden');
-                }
+
               }
-            })
-          })
-        } else {
+            });
+          });
+        } else
           $.toast('没有搜索到结果！', 'forbidden');
-        }
+
       },
       error: function (err) {
         $.toast('未知错误！', 'forbidden');

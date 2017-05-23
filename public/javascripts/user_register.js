@@ -17,7 +17,7 @@ $(document).ready(function () {
     var rpwd = $('#repassword').val() || false;
     var username = $('#account').val() || false;
 
-    if (!pwd || !rpwd || !username) {
+    if (! pwd || ! rpwd || ! username) {
       if (flag) $.toast('请完整填写所有内容！', 'forbidden');
       flag = false;
     }
@@ -57,6 +57,6 @@ $(document).ready(function () {
           else
             $.toast('未知错误！', 'forbidden');
         }
-      })
-  })
+      });
+  });
 });

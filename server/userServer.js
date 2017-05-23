@@ -106,8 +106,8 @@ pub.makeFriend = (req, res, model, next) => {
         resolve(res);
       }, (err) => {
         reject(err);
-      })
-    })
+      });
+    });
   };
 
   let workBody = (body) => {
@@ -118,32 +118,32 @@ pub.makeFriend = (req, res, model, next) => {
     let _body = {'adder': body.friend, 'friend': body.adder};
 
     let saveWork = ([data1, data2]) => {
-      if (!data1 && !data2) {
+      if (! data1 && ! data2)
         Promise.all([
           saveFriendPromise(body),
           saveFriendPromise(_body)
         ]).then(([_data1, _data2]) => {
           response.resSuccessBuilder(res, 'success!');
         }).catch((err) => {
-          next({status: 400, msg: err})
-        })
-      } else {
+          next({status: 400, msg: err});
+        });
+      else
         throw new Error('The friendship is exited!');
-      }
+
     };
 
     Promise.all(promiseList)
       .then(saveWork)
       .catch((err) => {
-        next({status: 400, msg: err})
-      })
+        next({status: 400, msg: err});
+      });
   };
 
   check.checkBodyPromise(req.body, null, ['adder', 'friend'])
     .then(workBody)
     .catch((err) => {
       next({status: 400, msg: err});
-    })
+    });
 };
 
 /**
@@ -165,15 +165,15 @@ pub.deleteFriend = (req, res, model, next) => {
         response.resSuccessBuilder(res, 'success!');
       })
       .catch((err) => {
-        next({status: 400, msg: err})
-      })
+        next({status: 400, msg: err});
+      });
   };
 
   check.checkParamsPromise(req.params, null, ['adder', 'friend'], null)
     .then(workBody)
     .catch((err) => {
       next({status: 400, msg: err});
-    })
+    });
 };
 
 
@@ -200,8 +200,7 @@ pub.allFriend = (myid, populate, cb, next) => {
     .then(workData)
     .catch((err) => {
       next({status: 400, msg: err});
-    })
+    });
 };
-
 
 module.exports = pub;

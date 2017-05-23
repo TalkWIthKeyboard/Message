@@ -35,7 +35,7 @@ let saveObj = (res, body, model, cb, next) => {
       next(err);
       return;
     }
-    !cb ? response.resSuccessBuilder(res, _model) : cb(_model);
+    ! cb ? response.resSuccessBuilder(res, _model) : cb(_model);
   });
 };
 
@@ -56,7 +56,7 @@ pub.create = (req, res, model, keyList, key, cb, selfCheck, errorInfo, next) => 
     .then((body) => {
       if (key && body[key]) {
         // 自定义的检查规则不满足
-        if (!selfCheck(body)) {
+        if (! selfCheck(body)) {
           next({status: 400, msg: errorInfo});
           return;
         }
@@ -161,7 +161,7 @@ pub.update = (req, res, model, paramsList = ['_id'], queryList = null, bodyList,
           }
           response.resSuccessBuilder(res, data);
         });
-    });
+      });
   }).catch((err) => {
     next({status: 400, msg: err});
   });

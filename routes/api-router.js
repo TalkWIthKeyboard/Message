@@ -7,6 +7,7 @@ let populate = require('./../model/conf').populateObj;
 let model = require('./../model/create');
 let router = require('express').Router();
 let user = require('./../server/userServer');
+let message = require('./../server/messageServer');
 
 /**
  * 用户注册
@@ -53,6 +54,15 @@ router.post('/friend', (req, res, next) => {
 router.delete('/friend/:friend', (req, res, next) => {
   req.params.adder = req.session.user._id;
   user.deleteFriend(req, res, model['friend'], next);
+});
+
+
+/**
+ * 发消息
+ */
+router.post('/message', (req, res, next) => {
+  req.body.sender = req.session.user._id;
+  message.sendMessage(req.body, res, next);
 });
 
 module.exports = router;
