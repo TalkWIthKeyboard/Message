@@ -9,6 +9,7 @@ let _ = require('underscore');
 let model = require('./../model/create');
 let check = require('./../server/requestServer');
 let util = require('./../builder/utilBuilder');
+let message = require('./messageServer');
 
 /**
  * 进行登录
@@ -187,13 +188,24 @@ pub.deleteFriend = (req, res, model, next) => {
 pub.allFriend = (myid, populate, cb, next) => {
   let workData = (data) => {
     let res = [];
+    let promiseList = [];
     _.each(data, (each) => {
       let obj = {};
+      obj._id = each.friend._id;
       obj.username = each.friend.username;
       obj.notRead = each.notRead;
+      let params = {'sender': myid, 'receiver': obj._id};
+      promiseList.push(findLastMessagePromise(params));
       res.push(obj);
     });
-    cb(res);
+
+    Promise.all(promiseList).then(data => {
+      for (let i = 0; i < data.length; i++) {
+        res[i].message = data[i];
+      }
+      console.log(res);
+      cb(res);
+    });
   };
 
   promise.findByConditionPromise(model['friend'], {'adder': myid}, populate)
@@ -201,6 +213,33 @@ pub.allFriend = (myid, populate, cb, next) => {
     .catch((err) => {
       next({status: 400, msg: err});
     });
+};
+
+/**
+ * 寻找最近的一次通信内容
+ * @param params
+ * @param scb
+ * @param fcb
+ */
+let findLastMessage = (params, scb, fcb) => {
+  message.findAllMessagePromise(params)
+    .then((obj) => {
+      let message = obj.message;
+      if (message.length !== 0) scb(message[message.length - 1]);
+      else scb(null);
+    })
+    .catch(err => fcb(err))
+};
+
+/**
+ * findLastMessage的promise对象
+ * @param params
+ * @returns {Promise}
+ */
+let findLastMessagePromise = (params) => {
+  return new Promise((resolve, reject) => {
+    findLastMessage(params, message => resolve(message), err => reject(err))
+  });
 };
 
 module.exports = pub;

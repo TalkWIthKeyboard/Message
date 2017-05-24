@@ -38,7 +38,7 @@ pub.sendMessage = (body, res, next) => {
   let workRes = (_data) => {
     promise.checkIsExistPromise(model['friend'], util.objMaker(['adder', 'friend'], [body.receiver, body.sender]))
       .then((data) => {
-        data .notRead ++;
+        data.notRead++;
         data.save((err) => {
           if (err)
             next({status: 400, msg: err});
@@ -67,7 +67,7 @@ pub.sendMessage = (body, res, next) => {
 let removeMessageReader = (params, scb, fcb) => {
   promise.checkIsExistPromise(model['friend'], util.objMaker(['adder', 'friend'], [params.sender, params.receiver]))
     .then((data) => {
-      data .notRead --;
+      data.notRead = 0;
       data.save((err) => {
         if (err) fcb(err);
         scb(params);
@@ -98,17 +98,19 @@ pub.removeMessageReaderPromise = (params) => {
  * @param scb
  * @param fcb
  */
-pub.findAllMessage = (params, scb, fcb) => {
+let findAllMessage = (params, scb, fcb) => {
   let promiseList = [
     promise.findByConditionPromise(model['message'], util.objMaker(['sender', 'receiver'], [params.sender, params.receiver])),
-    promise.findByConditionPromise(model['message'], util.objMaker(['sender', 'receiver'], [params.receiver, params.sender]))
+    promise.findByConditionPromise(model['message'], util.objMaker(['sender', 'receiver'], [params.receiver, params.sender])),
+    promise.findByConditionPromise(model['user'], util.objMaker('_id', params.receiver))
   ];
 
-  let sortMessage = ([message1, message2]) => {
+  let sortMessage = ([message1, message2, receiver]) => {
     let message = [];
     // type 1 是自己发给别人 2 是别人发给自己
     _.each(message1, (each) => {
       let obj = {};
+      obj.id = each._id;
       obj.message = each.message;
       obj.time = each.meta.createAt;
       obj.type = 1;
@@ -117,20 +119,43 @@ pub.findAllMessage = (params, scb, fcb) => {
 
     _.each(message2, (each) => {
       let obj = {};
+      obj.id = each._id;
       obj.message = each.message;
       obj.time = each.meta.createAt;
       obj.type = 2;
       message.push(obj);
     });
 
-    scb(message.sort((a, b) => {
-      return a.time - b.time;
-    }));
+    scb({
+      message: message.sort((a, b) => {
+        return a.time - b.time;
+      }),
+      receiver: {
+        username: receiver[0].username,
+        id: receiver[0]._id
+      }
+    });
   };
 
   Promise.all(promiseList)
     .then(sortMessage)
     .catch(err => fcb(err));
+};
+
+
+/**
+ * 查找所有的聊天记录的promise
+ * @param params
+ * @returns {Promise}
+ */
+pub.findAllMessagePromise = (params) => {
+  return new Promise((resolve, reject) => {
+    findAllMessage(
+      params,
+      data => resolve(data),
+      err => reject(err)
+    );
+  });
 };
 
 

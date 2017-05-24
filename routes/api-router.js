@@ -65,4 +65,12 @@ router.post('/message', (req, res, next) => {
   message.sendMessage(req.body, res, next);
 });
 
+
+/**
+ * 删除消息
+ */
+router.delete('/message/:id', (req, res, next) => {
+  api.delete(req, res, model['message'], ['id'], null, '_id', req.params.id, next);
+});
+
 module.exports = router;

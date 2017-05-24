@@ -24,13 +24,22 @@ html {
 }
 
 .weui-top .top-message {
-    margin-left: 5%;
-    margin-top: 5px;
+    text-align: center;
+    display: block;
+    margin-top: 10px;
     color: aliceblue;
-    font-size: 24px;
+    font-size: 17px;
 }
 
-.weui-top img {
+.weui-top a .img-left {
+    float: left;
+    height: 25px;
+    width: 25px;
+    margin-left: 7.5px;
+    margin-top: 7.5px;
+}
+
+.weui-top a .img-right {
     float: right;
     height: 25px;
     width: 25px;

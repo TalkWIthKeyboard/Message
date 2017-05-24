@@ -6,6 +6,7 @@ let router = require('express').Router();
 let user = require('./../server/userServer');
 let message = require('./../server/messageServer');
 let populate = require('./../model/conf').populateObj;
+let response = require('./../builder/responseBuilder');
 
 /**
  * 登录页面
@@ -56,11 +57,15 @@ router.get('/search', (req, res, next) => {
 router.get('/message/:receiver', (req, res, next) => {
   if (req.params.receiver) {
     req.params.sender = req.session.user._id;
-    // message.removeMessageReaderPromise(req.params)
-    //   .then()
-    message.findAllMessage(req.params, (data) => {
-      console.log(data);
-    });
+    message.removeMessageReaderPromise(req.params)
+      .then(message.findAllMessagePromise)
+      .then(data => res.render('message', {
+        layout: false,
+        title: '消息',
+        message: data.message,
+        receiver: data.receiver
+      }))
+      .catch(err => next({status: 400, msg: err}))
   }
 });
 

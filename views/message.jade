@@ -1,0 +1,30 @@
+//
+   Created by CoderSong on 17/5/24.
+
+extends layout
+
+block content
+  link(rel='stylesheet', href='/stylesheets/message.css')
+
+  // 头
+  .weui-top
+    a(href='/h5/friend')
+      img.img-left(src='/images/go_back.png')
+    a(href='/h5/search')
+      img.img-right(src='/images/find_white.png')
+    span.top-message #{receiver.username}
+
+  .weui-body
+    each info in message
+      - if (info.type == 2)
+        .message-left
+          p.message-delete(data-id=`${info.id}`)= info.message
+      - else
+        .message-right
+          p.message-delete(data-id=`${info.id}`)= info.message
+
+  // 脚
+  .weui-foot
+    textarea.my-textarea(data-id=`${receiver.id}`,placeholder='', rows='2')
+
+  script(src='/javascripts/message.js')

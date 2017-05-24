@@ -91,7 +91,7 @@ pub.delete = (req, res, model, paramsList = ['_id'], queryList = null, key, valu
   check.checkParams(req.params, req.query, paramsList, queryList, ([params,]) => {
     promise.deleteByConditionPromise(model, util.objMaker(key, value))
       .then(() => {
-        response.resSuccessBuilder(res, 'success');
+        response.resSuccessBuilder(res, 'success!');
       })
       .catch((err) => {
         next({status: 400, msg: err});
