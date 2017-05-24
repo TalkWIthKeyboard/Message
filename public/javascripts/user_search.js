@@ -29,6 +29,8 @@ $(document).ready(function () {
         var friend = data.data;
         var appendString = '';
 
+        console.log(friend);
+
         if (friend) {
           appendString += '<div class="weui_media_box weui_media_appmsg"> \
                             <div class="weui_media_hd"> \

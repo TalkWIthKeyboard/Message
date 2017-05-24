@@ -22,6 +22,11 @@ pub.login = (req, res, populateKey, next) => {
   check.checkBody(req.body, model['user'], null, (body) => {
     promise.findByConditionPromise(model['user'], util.objMaker('username', body.username), populateKey)
       .then((list) => {
+        if (list.length === 0) {
+          next({status: 400, msg: 'Username or password error!'});
+          return;
+        }
+
         let data = list[0];
         if (data && data.password === body.password) {
           // 1. 添加session
@@ -49,6 +54,11 @@ pub.findFriend = (req, res, next) => {
   check.checkParams(req.params, null, ['username'], null, ([params,]) => {
     promise.findByConditionPromise(model['user'], util.objMaker('username', params['username']), null)
       .then((list) => {
+        if (list.length === 0) {
+          response.resSuccessBuilder(res, null);
+          return;
+        }
+
         let data = list[0];
         let promiseList = [
           promise.findByConditionPromise(
