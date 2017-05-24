@@ -25,9 +25,6 @@ $(document).ready(function () {
     $.ajax({
       url: url,
       type: 'GET',
-      data: {
-        'friend': value
-      },
       success: function (data) {
         var friend = data.data;
         var appendString = '';

@@ -20,7 +20,7 @@ html {
     top: 0px;
     z-index:9999;
     position: fixed;
-    background-color: skyblue;
+    background-color: #272736;
 }
 
 .weui-top .top-message {

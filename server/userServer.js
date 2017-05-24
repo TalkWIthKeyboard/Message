@@ -203,7 +203,6 @@ pub.allFriend = (myid, populate, cb, next) => {
       for (let i = 0; i < data.length; i++) {
         res[i].message = data[i];
       }
-      console.log(res);
       cb(res);
     });
   };
