@@ -28,9 +28,10 @@ app.use(cookieParser());
 app.use(session({
   secret: 'This is Message from TalkWithKeyboard!',
   name: 'Message',
-  cookie: {maxAge: 1200000},
-  resave: false,
-  saveUninitialized: true
+  rolling: true,
+  cookie: {maxAge: 1800000},
+  resave: true,
+  saveUninitialized: false
 }));
 
 // 4. 添加中间件和路由
