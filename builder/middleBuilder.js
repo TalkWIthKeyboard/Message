@@ -35,7 +35,7 @@ pub.checkHandler = () => {
     url: '/h5/login',
     type: 'GET'
   }, {
-    url: '/h5/user',
+    url: '/h5/register',
     type: 'GET'
   }];
 
