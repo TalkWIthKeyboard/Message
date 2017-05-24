@@ -14,11 +14,11 @@ pub.globalAtr = {
   meta: {
     createAt: {
       type: Date,
-      default: Date.now()
+      default: Date.now
     },
     updateAt: {
       type: Date,
-      default: Date.now()
+      default: Date.now
     }
   }
 };
@@ -88,10 +88,10 @@ let staticsOp = {
  */
 pub.hooksOp = {
   pre: {
-    updateDate: function (next) {
+    updateDate: (next) => {
       this.isNew
-        ? this.meta.createAt = this.meta.updateAt = Date.now()
-        : this.meta.updateAt = Date.now();
+        ? this.meta.createAt = this.meta.updateAt = Date.now
+        : this.meta.updateAt = Date.now;
       next();
     }
   },
