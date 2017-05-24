@@ -28,7 +28,7 @@ app.use(cookieParser());
 app.use(session({
   secret: 'This is Message from TalkWithKeyboard!',
   name: 'Message',
-  cookie: {maxAge: 80000},
+  cookie: {maxAge: 1200000},
   resave: false,
   saveUninitialized: true
 }));
